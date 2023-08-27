@@ -2,7 +2,6 @@ import data.*;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
-import java.sql.Struct;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -26,10 +25,10 @@ public class ApiHelper {
     }
 
     @Step("Send delete request to " + AUTH_USER)
-            public static Response deleteUser(String accessToken) {
-        return given()
+    public static void deleteUser(String accessToken) {
+        given()
                 .header("Content-type", "application/json")
-                .header("Authorization",accessToken)
+                .header("Authorization", String.valueOf(accessToken))
                 .when()
                 .delete(AUTH_USER);
     }
@@ -41,39 +40,23 @@ public class ApiHelper {
                 .body(new Login(login, password))
                 .post(LOGIN_USER);
     }
-    @Step("Send patch request to " + AUTH_USER)
-    public static Response unauthorizedUpdate(){
-        return given()
-                .header("Content-type", "application/json")
-                .when()
-                .patch(AUTH_USER);
-    }
 
     @Step("Send patch request to " + AUTH_USER)
-    public static Response update(String accessToken, String new_email, String new_name){
+    public static Response updateUser(String accessToken, String new_email, String new_name){
         User user = new User(new_email, new_name);
         return given()
                 .header("Content-type", "application/json")
-                .header("Authorization", accessToken)
+                .header("Authorization", String.valueOf(accessToken))
                 .body(user)
                 .when()
                 .patch(AUTH_USER);
     }
 
     @Step("Send post request to " + ORDER)
-    public static Response order(String accessToken, List<String> ingredients){
+    public static Response placeOrder(String accessToken, List<String> ingredients){
         return given()
                 .header("Content-type", "application/json")
-                .header("Authorization", accessToken)
-                .body(new OrderRequest(ingredients))
-                .when()
-                .post(ORDER);
-    }
-
-    @Step("Send post request to " + ORDER)
-    public static Response unauthorizedOrder(List<String> ingredients){
-        return given()
-                .header("Content-type", "application/json")
+                .header("Authorization", String.valueOf(accessToken))
                 .body(new OrderRequest(ingredients))
                 .when()
                 .post(ORDER);
@@ -81,16 +64,8 @@ public class ApiHelper {
 
     @Step("Send get request to " + ORDER)
     public static Response getUsersOrders(String accessToken){
-        Response response = given()
-                .header("Authorization", accessToken)
-                .when()
-                .get(ORDER);
-        return response;
-    }
-
-    @Step("Send get request to " + ORDER)
-    public static Response getUnauthorizedUsersOrders(){
         return given()
+                .header("Authorization", String.valueOf(accessToken))
                 .when()
                 .get(ORDER);
     }

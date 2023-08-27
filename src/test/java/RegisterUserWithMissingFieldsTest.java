@@ -8,12 +8,12 @@ import org.junit.runners.Parameterized;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @RunWith(Parameterized .class)
-public class RegistrationWithMissingFieldsTests {
+public class RegisterUserWithMissingFieldsTest {
     private final String email;
     private final String password;
     private final String name;
 
-    public RegistrationWithMissingFieldsTests(String email, String password, String name) {
+    public RegisterUserWithMissingFieldsTest(String email, String password, String name) {
             this.email = email;
             this.password = password;
             this.name = name;
