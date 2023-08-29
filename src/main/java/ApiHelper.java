@@ -42,12 +42,11 @@ public class ApiHelper {
     }
 
     @Step("Send patch request to " + AUTH_USER)
-    public static Response updateUser(String accessToken, String new_email, String new_name){
-        User user = new User(new_email, new_name);
+    public static Response updateUser(String accessToken, User new_user){
         return given()
                 .header("Content-type", "application/json")
                 .header("Authorization", String.valueOf(accessToken))
-                .body(user)
+                .body(new_user)
                 .when()
                 .patch(AUTH_USER);
     }
